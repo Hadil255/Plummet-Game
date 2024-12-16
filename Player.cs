@@ -119,6 +119,12 @@ public class Player : MonoBehaviour
         }
 
         // Question 5 : Sauvegarde de la progression du jeu 
+        if (ScoreManager.Instance.currentEnergy <= 0)
+        {
+        _isGameOver = true;
+        Debug.Log("Game Over! No more energy.");
+        // Ici, vous pouvez ajouter une logique pour afficher un écran de fin de jeu ou redémarrer la scène.
+        }
     }
 
     //mouvement automatique controlle par le mode AI
@@ -167,6 +173,8 @@ public class Player : MonoBehaviour
     // Méthode qui s'exécute lors d'une collision
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Wall")) // Vérifie si l'objet est un mur
+        {
         // Augmente le nombre de collisions dans le ScoreManager
         scoreManager.AddCollision();
 
@@ -175,6 +183,7 @@ public class Player : MonoBehaviour
 
         // Retirer un mur (si applicable)
         scoreManager.RemoveWall();
+        }
     }
 
     // Dessin et coloration des gizmos
