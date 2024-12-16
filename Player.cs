@@ -137,6 +137,12 @@ public class Player : MonoBehaviour
         {
         _isGameOver = true;
         Debug.Log("Game Over! No more energy.");
+        // Appel pour sauvegarder le score dans MongoDB
+        string playerName = "HadilLahar"; 
+        int score = ScoreManager.Instance.playerScore;
+
+        // Appelle la méthode asynchrone pour sauvegarder
+        _ = PlayerData.SaveScoreAsync(playerName, score);
         // Ici, vous pouvez ajouter une logique pour afficher un écran de fin de jeu ou redémarrer la scène.
         OnGameOver?.Invoke();
         }
