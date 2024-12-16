@@ -12,10 +12,14 @@ public class ScoreManager : MonoBehaviour
     public int collisionCount;
     public int remainingWalls;
 
+    // Nouvelle variable pour le score
+    public int playerScore;
+
     // Références aux éléments UI pour afficher le score
     public Text energyText;
     public Text collisionText;
     public Text wallText;
+    public Text scoreText; // Ajout pour afficher le score
 
     // Initialisation du ScoreManager
     private void Awake()
@@ -38,6 +42,7 @@ public class ScoreManager : MonoBehaviour
         currentEnergy = maxEnergy;
         collisionCount = 0;
         remainingWalls = 10; // Ajuste selon ton jeu (le nombre de murs)
+        playerScore = CalculateScore();
         
         // Met à jour l'affichage initial
         UpdateUI();
@@ -48,13 +53,16 @@ public class ScoreManager : MonoBehaviour
     {
         currentEnergy -= amount;
         if (currentEnergy < 0) currentEnergy = 0;
+        UpdateScore(); // Met à jour le score après une réduction d'énergie
         UpdateUI();
     }
+    
 
     // Méthode pour ajouter une collision
     public void AddCollision()
     {
         collisionCount++;
+        UpdateScore(); // Met à jour le score après une collision
         UpdateUI();
     }
 
@@ -63,9 +71,20 @@ public class ScoreManager : MonoBehaviour
     {
         remainingWalls--;
         if (remainingWalls < 0) remainingWalls = 0;
+        UpdateScore(); // Met à jour le score après qu’un mur est retiré
         UpdateUI();
     }
+    // Méthode pour calculer le score
+    private int CalculateScore()
+    {
+        return (currentEnergy - collisionCount) + remainingWalls;
+    }
 
+    // Méthode pour mettre à jour le score
+    private void UpdateScore()
+    {
+        playerScore = CalculateScore();
+    }
     // Méthode pour mettre à jour l'affichage de l'UI
     private void UpdateUI()
     {
@@ -73,5 +92,6 @@ public class ScoreManager : MonoBehaviour
         energyText.text = "Energy: " + currentEnergy;
         collisionText.text = "Collisions: " + collisionCount;
         wallText.text = "Remaining Walls: " + remainingWalls;
+        scoreText.text = "Score: " + playerScore; // Affichage du score
     }
 }
