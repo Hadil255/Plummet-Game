@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     private bool _isGameOver;
     
     // Question 6 : Ajout d'un mode AI  - attribut pour activer le mode AI
+    public bool isAIAutoMoveEnabled = true; // Attribut pour activer/désactiver le mode AI
 
     private List<Vector2> path; //chemin de Djikstra
     private int currentPathIndex; 
@@ -43,6 +44,11 @@ public class Player : MonoBehaviour
 
         // Question 6 : Ajout d'un mode AI  - calcul du chemin
         // rajouter l'appel de fonction requis
+        // Ajouter l'appel de fonction requis pour la navigation automatique
+        if (isAIAutoMoveEnabled)
+        {
+            CalculatePath();
+        }
 
         //Question 4 : Gestion de l'évènement fin du jeu
         // Ajouter l'abonnement à l'événement OnGameOver
@@ -111,15 +117,19 @@ public class Player : MonoBehaviour
         // Met à jour les scores en fonction des actions du joueur
         if (!_isGameOver)
         {
-            // Détecter le mouvement du joueur
-            float h = Input.GetAxis("Horizontal");
-            float v = Input.GetAxis("Vertical");
-            movement = new Vector2(h * speed, v * speed);
-
-            // Ici tu peux ajouter des conditions pour contrôler les événements comme les collisions
-
-            // Exemple : Si le joueur se déplace et entre en collision
-            // Appeler ReduceEnergy et AddCollision ici en fonction des conditions
+            // Contrôler le joueur manuellement si le mode AI est désactivé
+            if (!isAIAutoMoveEnabled)
+            {
+                float h = Input.GetAxis("Horizontal");
+                float v = Input.GetAxis("Vertical");
+                movement = new Vector2(h * speed, v * speed);
+            }
+            else
+            {
+                // Mode AI : Calcul du chemin et mouvement automatique
+                UpdateAIMovement();
+                CheckIfStuck(); // Vérifier si le joueur est bloqué et recalculer le chemin si nécessaire
+            }
         }
 
         // Question 5 : Sauvegarde de la progression du jeu 
