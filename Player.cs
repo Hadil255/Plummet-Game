@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     private ScoreManager scoreManager;
 
     //Question 4 : Gestion de l'évènement fin du jeu
+    public delegate void GameOverEventHandler();  // (ajouté)
+    public event GameOverEventHandler OnGameOver;  // (ajouté)
     
     void Start()
     {
@@ -43,6 +45,8 @@ public class Player : MonoBehaviour
         // rajouter l'appel de fonction requis
 
         //Question 4 : Gestion de l'évènement fin du jeu
+        // Ajouter l'abonnement à l'événement OnGameOver
+        OnGameOver += RestartGame;
     }
 
     //methode qui calcule le chemin a prendre en Mode AI
@@ -124,7 +128,10 @@ public class Player : MonoBehaviour
         _isGameOver = true;
         Debug.Log("Game Over! No more energy.");
         // Ici, vous pouvez ajouter une logique pour afficher un écran de fin de jeu ou redémarrer la scène.
+        OnGameOver?.Invoke();
         }
+        // Vérifier si le joueur a franchi la ligne d'arrivée
+        PlayerCrossedFlags();
     }
 
     //mouvement automatique controlle par le mode AI
@@ -200,4 +207,31 @@ public class Player : MonoBehaviour
     }
 
     // Question 4 : Gestion de l'évènement fin du jeu
+    // Methode qui gère la fin du jeu
+    void PlayerCrossedFlags()
+    {
+        if (rigidBody2D.position.x > 24.0f && !_isGameOver)
+        {
+            _isGameOver = true;
+            Debug.Log("Reached the finish line!");
+            // Question 4 : Déclenche l'événement de fin du jeu
+            OnGameOver?.Invoke();  // (ajouté ici)
+        }
+    }
+
+    // Fonction qui gère le redémarrage du jeu
+    void RestartGame()  // (ajouté à la question 4)
+    {
+        Debug.Log("Restarting game...");
+        // Logique de redémarrage du jeu, par exemple réinitialiser les positions, l'énergie, etc.
+        _isGameOver = false;
+        transform.position = new Vector2(0, 0); // Réinitialiser la position du joueur
+        ScoreManager.Instance.ResetScore(); // Réinitialiser les scores
+        path.Clear(); // Effacer le chemin actuel
+        CalculatePath(); // Recalculer le chemin pour recommencer le jeu
+    }
+    void OnDestroy()
+    {
+        OnGameOver -= RestartGame;  // (ajouté ici)
+    }
 }
