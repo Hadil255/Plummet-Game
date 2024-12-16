@@ -36,3 +36,16 @@ Responsabilité principale : Gérer les portes (réelles ou fausses) et leur ét
 Le DoorManager gère l'ensemble des portes dans une scène. Il attribue de manière aléatoire un certain nombre de fausses portes parmi toutes les portes existantes. 
 Ce gestionnaire est responsable de l'initialisation de l'état des portes au début du jeu.
 Responsabilité principale : Gérer la création et l'assignation des portes (vraies et fausses) dans le jeu.
+
+
+###########Ajout : Système de calcul et mise à jour des scores##########
+Un système de score a été implémenté pour enrichir l'expérience du joueur. Le score est calculé en temps réel en utilisant la formule suivante :
+
+Score = (Niveau d’énergie - Nombre de collisions) + Nombre de murs restants
+
+Fonctionnalités :
+Réduction d’énergie : Lorsqu'une collision se produit, le niveau d’énergie diminue (par exemple, de 50 unités par collision).
+Comptage des collisions : Chaque collision est comptabilisée, ce qui impacte directement le score.
+Suivi des murs restants : Le nombre de murs restants est pris en compte dans le calcul final du score.
+Affichage en temps réel : Le score est affiché dynamiquement à l’écran grâce à l’interface utilisateur Unity (UI Text), et il est mis à jour après chaque événement affectant le score.
+Ce système permet de combiner plusieurs éléments de gameplay dans une seule métrique, rendant le jeu plus engageant en encourageant le joueur à éviter les collisions tout en optimisant sa progression.
