@@ -10,7 +10,7 @@ public class PlayerData
     public int steps;
 
     // Ajout pour la sauvegarde
-    private static string connectionString = "mongodb+srv://hadillahar:myPassword123@cluster.j0sfx.mongodb.net/progression?retryWrites=true&w=majority";
+    private static string connectionString = "mongodb+srv://hadillahar:121U9vrqYIgPaHYh@cluster.j0sfx.mongodb.net/progression?retryWrites=true&w=majority";
     private static IMongoDatabase database;
 
     // Méthode pour connecter à la base de données
